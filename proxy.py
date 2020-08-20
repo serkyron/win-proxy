@@ -12,15 +12,14 @@ INTERNET_SETTINGS = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
     r'Software\Microsoft\Windows\CurrentVersion\Internet Settings',
     0, winreg.KEY_ALL_ACCESS)
 
-def set_key(name, value):
-    _, reg_type = winreg.QueryValueEx(INTERNET_SETTINGS, name)
-    winreg.SetValueEx(INTERNET_SETTINGS, name, 0, reg_type, value)
+def set_key(name, value, type):
+    winreg.SetValueEx(INTERNET_SETTINGS, name, 0, type, value)
 
 if sys.argv[1] == "off":
-	set_key('ProxyEnable', 0)
+	set_key('ProxyEnable', 0, winreg.REG_DWORD)
 else:
-	set_key('ProxyEnable', 1)
-	set_key('ProxyServer', sys.argv[2])
+	set_key('ProxyEnable', 1, winreg.REG_DWORD)
+	set_key('ProxyServer', sys.argv[2], winreg.REG_SZ)
 
 INTERNET_OPTION_REFRESH = 37
 INTERNET_OPTION_SETTINGS_CHANGED = 39
